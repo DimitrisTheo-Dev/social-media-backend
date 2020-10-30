@@ -10,6 +10,8 @@ export class UserService {
     @InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,
   ) {}
 
+  private toProfile(user: UserEntity) {}
+
   async findByUsername(username: string): Promise<UserEntity> {
     return this.userRepo.findOne({ where: { username } });
   }
@@ -17,5 +19,27 @@ export class UserService {
   async updateUser(username: string, data: UpdateUserDTO) {
     await this.userRepo.update({ username }, data);
     return this.findByUsername(username);
+  }
+  async followUser(currentUser: UserEntity, username: string) {
+    const user = await this.userRepo.findOne({
+      where: { username },
+      relations: ['followers'],
+    });
+    user.followers.push(currentUser);
+    await user.save();
+    return user.toProfile(currentUser);
+  }
+
+  async unfollowUser(currentUser: UserEntity, username: string) {
+    const user = await this.userRepo.findOne({
+      where: { username },
+      relations: ['followers'],
+    });
+    //This means that the remaining will be everything except the currentUser
+    user.followers = user.followers.filter(
+      follower => follower !== currentUser,
+    );
+    await user.save();
+    return user.toProfile(currentUser);
   }
 }

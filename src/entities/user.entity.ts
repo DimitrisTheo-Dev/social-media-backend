@@ -1,8 +1,19 @@
-import { Entity, Column, BeforeInsert, JoinTable, ManyToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  BeforeInsert,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+} from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Exclude, classToPlain } from 'class-transformer';
 import { IsEmail } from 'class-validator';
+
 import { AbstractEntity } from './abstract-entity';
+import { ArticleEntity } from './article.entity';
+import { CommentEntity } from './comment.entity';
+import { UserResponse } from 'src/models/user.model';
 
 @Entity('users')
 export class UserEntity extends AbstractEntity {
@@ -36,6 +47,24 @@ export class UserEntity extends AbstractEntity {
   )
   followee: UserEntity[];
 
+  @OneToMany(
+    type => ArticleEntity,
+    article => article.author,
+  )
+  articles: ArticleEntity[];
+
+  @OneToMany(
+    type => CommentEntity,
+    comment => comment.author,
+  )
+  comments: CommentEntity[];
+
+  @ManyToMany(
+    type => ArticleEntity,
+    article => article.favoritedBy,
+  )
+  favorites: ArticleEntity[];
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
@@ -45,12 +74,15 @@ export class UserEntity extends AbstractEntity {
     return await bcrypt.compare(attempt, this.password);
   }
 
-  toJSON() {
-    return classToPlain(this);
+  toJSON(): UserResponse {
+    return <UserResponse>classToPlain(this);
   }
 
-  toProfile(user: UserEntity) {
-    const following = this.followers.includes(user);
+  toProfile(user?: UserEntity) {
+    let following = null;
+    if (user) {
+      following = this.followers.includes(user);
+    }
     const profile: any = this.toJSON();
     delete profile.followers;
     return { ...profile, following };

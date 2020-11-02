@@ -12,7 +12,7 @@ import {
   import * as slugify from 'slug';
   import { AbstractEntity } from './abstract-entity';
   import { UserEntity } from './user.entity';
-import { CommentEntity } from './comment.enitty';
+import { CommentEntity } from './comment.entity';
   
   @Entity('articles')
   export class ArticleEntity extends AbstractEntity {

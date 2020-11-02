@@ -39,3 +39,9 @@ export class UpdateUserDTO {
 export interface AuthPayload {
   username: string;
 }
+export interface UserResponse {
+  email: string;
+  username?: string;
+  bio: string;
+  image: string | null;
+}

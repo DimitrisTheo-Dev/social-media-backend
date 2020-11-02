@@ -17,6 +17,8 @@ import {
   import { CreateArticleDTO, FindAllQuery, FindFeedQuery, UpdateArticleDTO } from 'src/models/article.models';
   import { OptionalAuthGuard } from '../auth/optional-auth.guard';
 import { CommentsService } from './comments.service';
+import { CreateCommentDTO } from 'src/models/comment.models';
+import { UpdateUserDTO } from 'src/models/user.model';
   
   @Controller('articles')
   export class ArticleController {
@@ -50,9 +52,9 @@ import { CommentsService } from './comments.service';
     @UseGuards(AuthGuard())
     async createArticle(
       @User() user: UserEntity,
-      @Body(ValidationPipe) data: { article: CreateArticleDTO },
+      @Body('article', ValidationPipe) data: CreateArticleDTO,
     ) {
-      const article = await this.articleService.createArticle(user, data.article);
+      const article = await this.articleService.createArticle(user, data);
       return { article };
     }
   
@@ -61,12 +63,12 @@ import { CommentsService } from './comments.service';
     async updateArticle(
       @Param('slug') slug: string,
       @User() user: UserEntity,
-      @Body(ValidationPipe) data: { article: UpdateArticleDTO },
+      @Body('article', ValidationPipe) data: UpdateArticleDTO,
     ) {
       const article = await this.articleService.updateArticle(
         slug,
         user,
-        data.article,
+        data,
       );
       return { article };
     }
@@ -77,6 +79,31 @@ import { CommentsService } from './comments.service';
       const article = await this.articleService.deleteArticle(slug, user);
       return { article };
     }
+
+    @Get('/:slug/comments')
+    async findComments(@Param('slug') slug:string){
+        const comments = await this.commentService.findByArticleSlug(slug);
+    
+        return { comments };
+    }
+
+    @Post('/:slug/comments')
+    async createComment(
+        @User() user: UserEntity, 
+        @Body('comment', ValidationPipe) data: CreateCommentDTO){
+        const comment = await this.commentService.createComment(user, data);
+        return { comment };
+    }
+
+    @Delete('/:slug/comments/:id')
+    async deleteComment(
+        @User() user: UserEntity,
+        @Param('id') id: number
+    ) {
+        const comment = await this.commentService.deleteComment(user, id);
+        return { comment };
+    }
+
     @Post('/:slug/favorite')
     @UseGuards(AuthGuard())
     async favoriteArticle(

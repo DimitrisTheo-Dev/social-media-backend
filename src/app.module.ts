@@ -5,12 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConnectionService } from './database-connection.service';
 import { UserModule } from './user/user.module';
 import { ArticleModule } from './article/article.module';
+import { TagEntity } from './entities/tag.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       useClass: DatabaseConnectionService,
     }),
+    TypeOrmModule.forFeature([TagEntity]),
     UserModule,
     ArticleModule,
   ],

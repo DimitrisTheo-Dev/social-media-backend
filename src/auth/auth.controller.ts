@@ -1,18 +1,21 @@
 import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterDTO, LoginDTO } from '../models/user.model';
+import { RegisterDTO, LoginDTO, AuthResponse } from '../models/user.model';
+import { ResponseObject } from 'src/models/response.models';
 
 @Controller('users')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post()
-  register(@Body(ValidationPipe) credentials: RegisterDTO) {
-    return this.authService.register(credentials);
+  async register(@Body(ValidationPipe) credentials: RegisterDTO) {
+    const user = await this.authService.register(credentials);
+    return { user };
   }
 
   @Post('/login')
-  login(@Body('user', ValidationPipe) credentials: LoginDTO ) {
-    return this.authService.login(credentials);
+  async login(@Body('user', ValidationPipe) credentials: LoginDTO): Promise<ResponseObject<'user', AuthResponse>> {
+    const user = await this.authService.login(credentials);
+    return { user };
   }
 }

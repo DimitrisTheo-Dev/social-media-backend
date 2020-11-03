@@ -1,4 +1,5 @@
 import { classToPlain } from 'class-transformer';
+import { CommentResponse } from 'src/models/comment.models';
 import { Column, Entity, ManyToOne, OneToMany }from 'typeorm';
 import { AbstractEntity } from './abstract-entity';
 import { ArticleEntity } from './article.entity';
@@ -22,7 +23,7 @@ export class CommentEntity extends AbstractEntity {
     )
     article: ArticleEntity;
     
-    toJSON(){
-        return classToPlain(this);
-    }
+    toJSON() {
+        return <CommentResponse>classToPlain(this);
+      }
 }

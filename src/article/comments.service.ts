@@ -31,7 +31,7 @@ export class CommentsService {
             const comment = this.commentRepo.findOne({
                 where: {id, 'author.id': user.id },
             });
-            await (await comment).remove();
+            (await comment).remove();
             return comment;
         }
 }

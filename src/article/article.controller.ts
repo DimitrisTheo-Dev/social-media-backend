@@ -19,6 +19,7 @@ import {
 import { CommentsService } from './comments.service';
 import { CreateCommentDTO } from 'src/models/comment.models';
 import { UpdateUserDTO } from 'src/models/user.model';
+import { ResponseObject } from 'src/models/response.models';
   
   @Controller('articles')
   export class ArticleController {
@@ -28,8 +29,11 @@ import { UpdateUserDTO } from 'src/models/user.model';
         ) {}
 
     @Get()
-    @UseGuards(new OptionalAuthGuard)
-    async findAll(@User() user: UserEntity, @Query() query: FindAllQuery) {
+    @UseGuards(new OptionalAuthGuard())
+    async findAll(
+        @User() user: UserEntity,
+        @Query() query: FindAllQuery
+        ): Promise<ResponseObject<'articles', ArticleResponse[]> & ResponseObject<'articlesCount', number>>{
         const articles = await this.articleService.findAll(user, query);
         return { articles, articlesCount: articles.length};
     }

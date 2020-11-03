@@ -1,58 +1,68 @@
 import { IsString, IsArray, IsOptional } from 'class-validator';
+
 import { ProfileResponse } from './user.model';
 
 export class CreateArticleDTO {
-    @IsString()
-    title: string;
+  @IsString()
+  title: string;
 
-    @IsString()
-    body: string;
+  @IsString()
+  body: string;
 
-    @IsString()
-    description: string;
+  @IsString() 
+  description: string;
 
-    @IsArray()
-    @IsString({ each: true })
-    tagList: string[];
+  @IsArray()
+  tagList: string[];
+}
+
+export class CreateArticleBody {
+
+  article: CreateArticleDTO;
 }
 
 export class UpdateArticleDTO {
-    @IsString()
-    @IsOptional()
-    title: string;
+  @IsString()
+  @IsOptional()
+  title: string;
 
-    @IsString()
-    body: string;
+  @IsString()
+  @IsOptional()
+  body: string;
 
-    @IsString()
-    description: string;
+  @IsString()
+  @IsOptional()
+  description: string;
 
-    @IsArray()
-    @IsString({ each: true })
-    tagList: string[];
+  @IsArray()
+  @IsOptional()
+  tagList: string[];
+}
 
+export class UpdateArticleBody {
+  article: UpdateArticleDTO;
 }
 
 export interface FindFeedQuery {
-    limit?: number;
-    offset?: number;
+  limit?: number;
+  offset?: number;
 }
-export interface FindAllQuery extends FindFeedQuery {
-    tag?: string;
-    author?: string;
-    favorited?: string;
 
+export interface FindAllQuery extends FindFeedQuery {
+  tag?: string;
+  author?: string;
+  favorited?: string;
 }
 
 export interface ArticleResponse {
-    slug: string;
-    title: string;
-    description: string;
-    body: string;
-    tagList: string[];
-    createdAt: Date | string;
-    updatedAt: Date | string;
-    favorited: boolean| null;
-    favoritesCount: number;
-    author: ProfileResponse;
+  slug: string;
+  title: string;
+  description: string;
+  body: string;
+  tagList: string[];
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  favorited: boolean | null;
+  favoritesCount: number;
+  author: ProfileResponse;
 }

@@ -14,7 +14,7 @@ import {
   import { AuthGuard } from '@nestjs/passport';
   import { User } from 'src/auth/user.decorator';
   import { UserEntity } from 'src/entities/user.entity';
-  import { CreateArticleDTO, FindAllQuery, FindFeedQuery, UpdateArticleDTO } from 'src/models/article.models';
+  import { ArticleResponse, CreateArticleDTO, FindAllQuery, FindFeedQuery, UpdateArticleDTO } from 'src/models/article.models';
   import { OptionalAuthGuard } from '../auth/optional-auth.guard';
 import { CommentsService } from './comments.service';
 import { CreateCommentDTO } from 'src/models/comment.models';

@@ -6,22 +6,23 @@ import {
     Post,
     Delete,
     UseGuards,
-    HttpStatus,
     HttpCode,
   } from '@nestjs/common';
-  import { UserService } from './user.service';
-  import { User } from 'src/auth/user.decorator';
-  import { UserEntity } from 'src/entities/user.entity';
-  import { AuthGuard } from '@nestjs/passport';
+import { UserService } from './user.service';
+import { User } from 'src/auth/user.decorator';
+import { UserEntity } from 'src/entities/user.entity';
+import { AuthGuard } from '@nestjs/passport';
 import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
-  
   @Controller('profiles')
   export class ProfileController {
     constructor(private userService: UserService) {}
   
     @Get('/:username')
     @UseGuards(new OptionalAuthGuard())
-    async findProfile(@Param('username') username: string, @User() user: UserEntity) {
+    async findProfile(
+      @Param('username') username: string,
+      @User() user: UserEntity
+    ) {
       const profile = await this.userService.findByUsername(username, user);
       if (!profile) {
         throw new NotFoundException();
@@ -39,8 +40,9 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
       const profile = await this.userService.followUser(user, username);
       return { profile };
     } 
+
   
-    @Delete('/:username/follow')
+    @Delete('/:username/unfollow')
     @UseGuards(AuthGuard())
     async unfollowUser(
       @User() user: UserEntity,

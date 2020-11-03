@@ -18,7 +18,6 @@ import {
   import { OptionalAuthGuard } from '../auth/optional-auth.guard';
 import { CommentsService } from './comments.service';
 import { CreateCommentDTO } from 'src/models/comment.models';
-import { UpdateUserDTO } from 'src/models/user.model';
 import { ResponseObject } from 'src/models/response.models';
   
   @Controller('articles')
@@ -37,6 +36,7 @@ import { ResponseObject } from 'src/models/response.models';
         const articles = await this.articleService.findAll(user, query);
         return { articles, articlesCount: articles.length};
     }
+
 
     @Get('/feed')
     @UseGuards(AuthGuard())

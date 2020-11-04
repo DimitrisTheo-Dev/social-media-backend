@@ -18,25 +18,54 @@ export class UserService {
     return (
       await this.userRepo.findOne({
         where: { username },
-        relations: ['followers'],
+        relations: ['friends'],
       })
     ).toProfile(user);
   }
  
 
 
-  async followUser(
+  async sendFriendReq(
     currentUser: UserEntity,
     username: string,
   ): Promise<ProfileResponse> {
     const user = await this.userRepo.findOne({
       where: { username },
-      relations: ['followers'],
+      relations: ['friendRequests'],
     });
-    user.followers.push(currentUser);
+      user.friendRequests.push(currentUser);
+      await user.save();
+      return user.toProfile(currentUser);
+    
+  }
+
+  async getFriendReq(
+    currentUser: UserEntity,
+    username: string,
+  ) {
+    const user = await this.userRepo.findOne({
+      where: { username },
+      relations: ['friendRequests'],
+    });
+    return user.toProfile(currentUser);
+  }
+
+  async acceptUser(
+    currentUser: UserEntity,
+    username: string,
+  ): Promise<ProfileResponse> {
+    const user = await this.userRepo.findOne({
+      where: { username },
+      relations: ['friends'],
+    });
+    user.friendRequests = user.friendRequests.filter(
+      friend => friend !== currentUser,
+    );
+    user.friends.push(currentUser);
     await user.save();
     return user.toProfile(currentUser);
   }
+
 
   async unfollowUser(
     currentUser: UserEntity,
@@ -44,10 +73,10 @@ export class UserService {
   ): Promise<ProfileResponse> {
     const user = await this.userRepo.findOne({
       where: { username },
-      relations: ['followers'],
+      relations: ['friends'],
     });
-    user.followers = user.followers.filter(
-      follower => follower !== currentUser,
+    user.friends = user.friends.filter(
+      friend => friend !== currentUser,
     );
     await user.save();
     return user.toProfile(currentUser);

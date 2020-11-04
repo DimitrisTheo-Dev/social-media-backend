@@ -39,11 +39,17 @@ export class UserEntity extends AbstractEntity {
     user => user.followee,
   )
   @JoinTable()
-  followers: UserEntity[];
+  friends: UserEntity[];
+
+  @OneToMany(
+    type => UserEntity,
+    user => user.friendRequests,
+  )
+  friendRequests: UserEntity[];
 
   @ManyToMany(
     type => UserEntity,
-    user => user.followers,
+    user => user.friends,
   )
   followee: UserEntity[];
 
@@ -79,12 +85,12 @@ export class UserEntity extends AbstractEntity {
   }
 
   toProfile(user?: UserEntity) {
-    let following = null;
+    let areFriends = null;
     if (user) {
-      following = this.followers.includes(user);
+      areFriends = this.friends.includes(user);
     }
     const profile: any = this.toJSON();
     delete profile.followers;
-    return { ...profile, following };
+    return { ...profile, areFriends };
   }
 }

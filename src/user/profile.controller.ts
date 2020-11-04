@@ -16,33 +16,54 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
   @Controller('profiles')
   export class ProfileController {
     constructor(private userService: UserService) {}
-  
+
     @Get('/:username')
     @UseGuards(new OptionalAuthGuard())
     async findProfile(
       @Param('username') username: string,
-      @User() user: UserEntity
-    ) {
+      @User() user: UserEntity) {
       const profile = await this.userService.findByUsername(username, user);
       if (!profile) {
         throw new NotFoundException();
       }
       return { profile };
     }
-  
-    @Post('/:username/follow')
+
+    @Post('/:username/sendFriendRequest')
     @HttpCode(200)
     @UseGuards(AuthGuard())
-    async followUser(
+    async sendFriendReq(
       @User() user: UserEntity,
-      @Param('username') username: string,
-    ) {
-      const profile = await this.userService.followUser(user, username);
+      @Param('username') username: string) {
+      const profile = await this.userService.sendFriendReq(user, username);
       return { profile };
     } 
 
+    @Get('/:username/friendRequest')
+    @UseGuards(AuthGuard())
+    async getFriendReq(
+      @User() user: UserEntity,
+      @Param('username') username: string) {
+      const profiles = await this.userService.getFriendReq(user, username);
+      return { profiles }
+    }
+
+
+    
+    @Post('/:username/acceptFriendRequest')
+    @HttpCode(200)
+    @UseGuards(AuthGuard())
+    async acceptUser(
+      @User() user: UserEntity,
+      @Param('username') username: string) 
+    {
+      const profile = await this.userService.acceptUser(user, username);
+      return { profile };
+    }
+
+
   
-    @Delete('/:username/unfollow')
+    @Delete('/:username/unfriend')
     @UseGuards(AuthGuard())
     async unfollowUser(
       @User() user: UserEntity,

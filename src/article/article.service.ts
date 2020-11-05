@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
-
 import { ArticleEntity } from 'src/entities/article.entity';
 import { UserEntity } from 'src/entities/user.entity';
 import { TagEntity } from 'src/entities/tag.entity';
@@ -35,7 +34,7 @@ export class ArticleService {
   async findAll(user: UserEntity, query: FindAllQuery): Promise<ArticleResponse[]> {
     const findOptions: any = {
       where: {},
-      order: { createdAt: 'DESC' },
+      order: { createdAt : 'DESC' },
     };
     if (query.author) {
       findOptions.where['author.username'] = query.author;
@@ -57,7 +56,7 @@ export class ArticleService {
     );
   }
 
-  async findFeed(user: UserEntity,query: FindFeedQuery): Promise<ArticleResponse[]> {
+  async findFeed(user: UserEntity, query: FindFeedQuery): Promise<ArticleResponse[]> {
     const { friends } = await this.userRepo.findOne({
       where: { id: user.id },
       order:{ createdAt: 'DESC' },

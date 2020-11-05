@@ -17,7 +17,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(credentials: RegisterDTO) {
+  async register(credentials: RegisterDTO): Promise<AuthResponse> {
     try {
       const user = this.userRepo.create(credentials);
       await user.save();
@@ -32,7 +32,7 @@ export class AuthService {
     }
   }
 
-  async login({ email, password }: LoginDTO) {
+  async login({ email, password }: LoginDTO): Promise<AuthResponse> {
     try {
       const user = await this.userRepo.findOne({ where: { email } });
       const isValid = await user.comparePassword(password);

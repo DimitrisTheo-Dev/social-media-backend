@@ -5,7 +5,6 @@ import { ProfileResponse } from "./user.model";
 export class CreateCommentDTO {
     @IsString()
     body: string;
-
 }
 
 export class CommentResponse {

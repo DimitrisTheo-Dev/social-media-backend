@@ -1,5 +1,4 @@
 import { IsString, IsArray, IsOptional } from 'class-validator';
-
 import { ProfileResponse } from './user.model';
 
 export class CreateArticleDTO {
@@ -17,7 +16,6 @@ export class CreateArticleDTO {
 }
 
 export class CreateArticleBody {
-
   article: CreateArticleDTO;
 }
 
@@ -46,7 +44,6 @@ export class UpdateArticleBody {
 export interface FindFeedQuery {
   limit?: number;
   offset?: number;
-  createdAt: Date | string;
 }
 
 export interface FindAllQuery extends FindFeedQuery {

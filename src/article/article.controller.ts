@@ -34,7 +34,10 @@
         @Query() query: FindAllQuery
         ): Promise<ResponseObject<'articles', ArticleResponse[]> & ResponseObject<'articlesCount', number>>{
         const articles = await this.articleService.findAll(user, query);
-        return { articles, articlesCount: articles.length};
+        return { 
+          articles, 
+          articlesCount: articles.length,
+        };
     }
 
 

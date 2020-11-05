@@ -36,7 +36,6 @@ export class UserService {
       user.friendRequests.push(currentUser);
       await user.save();
       return user.toProfile(currentUser);
-    
   }
 
   async getFriendReq(

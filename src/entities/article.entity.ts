@@ -7,6 +7,8 @@
     JoinColumn,
     RelationCount,
     OneToMany,
+    CreateDateColumn,
+    UpdateDateColumn,
   } from 'typeorm';
   import { classToPlain } from 'class-transformer';
   import * as slugify from 'slug';
@@ -52,9 +54,15 @@
       { eager: true },
     )
     author: UserEntity;
-  
+
     @Column('simple-array')
     tagList: string[];
+
+    @CreateDateColumn()
+     createdAt: Date;
+
+    @UpdateDateColumn()
+     updatedAt: Date;
   
     @BeforeInsert()
     generateSlug() {

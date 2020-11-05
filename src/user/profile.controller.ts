@@ -20,8 +20,8 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
     @Get('/:username')
     @UseGuards(new OptionalAuthGuard())
     async findProfile(
-      @Param('username') username: string,
-      @User() user: UserEntity) {
+      @User() user: UserEntity,
+      @Param('username') username: string) {
       const profile = await this.userService.findByUsername(username, user);
       if (!profile) {
         throw new NotFoundException();
@@ -44,8 +44,8 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
     async getFriendReq(
       @User() user: UserEntity,
       @Param('username') username: string) {
-      const profiles = await this.userService.getFriendReq(user, username);
-      return { profiles }
+      const profile = await this.userService.getFriendReq(user, username);
+      return { profile }
     }
 
 

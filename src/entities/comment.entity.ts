@@ -12,7 +12,7 @@ export class CommentEntity extends AbstractEntity {
     
     @ManyToOne( 
         type => UserEntity, 
-        user => user.articles,
+        user => user.comments,
         { eager: true},
     )
     author: UserEntity;

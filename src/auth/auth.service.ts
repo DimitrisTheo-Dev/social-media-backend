@@ -21,7 +21,7 @@ export class AuthService {
     try {
       const user = this.userRepo.create(credentials);
       await user.save();
-      const payload = { username: user.username };
+      const payload = { id: user.id };
       const token = this.jwtService.sign(payload);
       return { ...user.toJSON(), token };
     } catch (err) {
@@ -39,7 +39,7 @@ export class AuthService {
       if (!isValid) {
         throw new UnauthorizedException('Invalid credentials');
       }
-      const payload = { username: user.username };
+      const payload = { id: user.id };
       const token = this.jwtService.sign(payload);
       return { ...user.toJSON(), token } ;
     } catch (err) {
@@ -47,9 +47,9 @@ export class AuthService {
     }
   }
 
-  async findCurrentUser(username: string) {
-    const user = await this.userRepo.findOne({ where: { username } });
-    const payload = { username };
+  async findCurrentUser(id: string) {
+    const user = await this.userRepo.findOne({ where: { id } });
+    const payload = { id };
     const token = this.jwtService.sign(payload);
     return { ...user.toJSON(), token  };
   }

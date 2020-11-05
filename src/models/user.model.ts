@@ -5,7 +5,7 @@ import {
   MaxLength,
   IsOptional,
 } from 'class-validator';
-import { UserEntity } from 'src/entities/user.entity';
+import { PrimaryGeneratedColumn } from 'typeorm';
 
 export class LoginDTO {
   @IsEmail()
@@ -38,7 +38,7 @@ export class UpdateUserDTO {
 }
 
 export interface AuthPayload {
-  username: string;
+  id: string;
 }
 export interface UserResponse {
   email: string;
@@ -50,5 +50,5 @@ export interface AuthResponse extends UserResponse{
   token: string;
 }
 export interface ProfileResponse extends UserResponse {
-  following: boolean | null;
+  friends: boolean | null;
 }

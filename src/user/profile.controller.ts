@@ -29,7 +29,7 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
       return { profile };
     }
 
-    @Post('/:username/sendFriendRequest')
+    @Post('/:username/send-friend-request')
     @HttpCode(200)
     @UseGuards(AuthGuard())
     async sendFriendReq(
@@ -39,7 +39,7 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
       return { profile };
     } 
 
-    @Get('/:username/friendRequest')
+    @Get('/:username/friend-request')
     @UseGuards(AuthGuard())
     async getFriendReq(
       @User() user: UserEntity,
@@ -50,7 +50,7 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
 
 
     
-    @Post('/:username/acceptFriendRequest')
+    @Post('/:username/accept-friend-request')
     @HttpCode(200)
     @UseGuards(AuthGuard())
     async acceptUser(
@@ -65,11 +65,11 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
   
     @Delete('/:username/unfriend')
     @UseGuards(AuthGuard())
-    async unfollowUser(
+    async unfriendUser(
       @User() user: UserEntity,
       @Param('username') username: string,
     ) {
-      const profile = await this.userService.unfollowUser(user, username);
+      const profile = await this.userService.unfriendUser(user, username);
       return { profile };
     }
   }

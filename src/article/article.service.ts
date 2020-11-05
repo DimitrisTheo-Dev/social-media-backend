@@ -58,14 +58,14 @@ export class ArticleService {
   }
 
   async findFeed(user: UserEntity,query: FindFeedQuery): Promise<ArticleResponse[]> {
-    const { followee } = await this.userRepo.findOne({
+    const { friends } = await this.userRepo.findOne({
       where: { id: user.id },
       order:{ createdAt: 'DESC' },
-      relations: ['followee'],
+      relations: ['friends'],
     });
     const findOptions = {
       ...query,
-      where: followee.map(follow => ({ author: follow.id })), 
+      where: friends.map(friend => ({ author: friend.id })), 
     };
     return (await this.articleRepo.find(findOptions)).map(article =>
       article.toArticle(user),

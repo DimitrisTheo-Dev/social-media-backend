@@ -67,7 +67,7 @@ export class UserService {
   }
 
 
-  async unfollowUser(
+  async unfriendUser(
     currentUser: UserEntity,
     username: string,
   ): Promise<ProfileResponse> {

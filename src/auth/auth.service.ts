@@ -9,7 +9,6 @@ import { AuthResponse, LoginDTO, RegisterDTO, UpdateUserDTO } from 'src/models/u
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
-import { ResponseObject } from 'src/models/response.models';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +26,7 @@ export class AuthService {
       return { ...user.toJSON(), token };
     } catch (err) {
       if (err.code === '23505') {
-        throw new ConflictException('Username has already been taken');
+        throw new ConflictException('Username or email has already been taken');
       }
       throw new InternalServerErrorException();
     }

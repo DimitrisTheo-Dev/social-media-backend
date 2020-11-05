@@ -5,6 +5,7 @@ import {
   JoinTable,
   ManyToMany,
   OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Exclude, classToPlain } from 'class-transformer';
@@ -17,7 +18,10 @@ import { UserResponse } from 'src/models/user.model';
 
 @Entity('users')
 export class UserEntity extends AbstractEntity {
-  @Column()
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+  
+  @Column({ unique: true })
   @IsEmail()
   email: string;
 
@@ -34,13 +38,6 @@ export class UserEntity extends AbstractEntity {
   @Exclude()
   password: string;
 
-  @ManyToMany(
-    type => UserEntity,
-    user => user.followee,
-  )
-  @JoinTable()
-  friends: UserEntity[];
-
   @OneToMany(
     type => UserEntity,
     user => user.friendRequests,
@@ -51,7 +48,7 @@ export class UserEntity extends AbstractEntity {
     type => UserEntity,
     user => user.friends,
   )
-  followee: UserEntity[];
+  friends: UserEntity[];
 
   @OneToMany(
     type => ArticleEntity,
@@ -90,7 +87,7 @@ export class UserEntity extends AbstractEntity {
       areFriends = this.friends.includes(user);
     }
     const profile: any = this.toJSON();
-    delete profile.followers;
+    delete profile.friends;
     return { ...profile, areFriends };
   }
 }

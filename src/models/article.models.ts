@@ -46,6 +46,7 @@ export class UpdateArticleBody {
 export interface FindFeedQuery {
   limit?: number;
   offset?: number;
+  createdAt: Date | string;
 }
 
 export interface FindAllQuery extends FindFeedQuery {

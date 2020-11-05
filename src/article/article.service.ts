@@ -35,6 +35,7 @@ export class ArticleService {
   async findAll(user: UserEntity, query: FindAllQuery): Promise<ArticleResponse[]> {
     const findOptions: any = {
       where: {},
+      order: { createdAt: 'DESC' },
     };
     if (query.author) {
       findOptions.where['author.username'] = query.author;
@@ -59,11 +60,12 @@ export class ArticleService {
   async findFeed(user: UserEntity,query: FindFeedQuery): Promise<ArticleResponse[]> {
     const { followee } = await this.userRepo.findOne({
       where: { id: user.id },
+      order:{ createdAt: 'DESC' },
       relations: ['followee'],
     });
     const findOptions = {
       ...query,
-      where: followee.map(follow => ({ author: follow.id })),
+      where: followee.map(follow => ({ author: follow.id })), 
     };
     return (await this.articleRepo.find(findOptions)).map(article =>
       article.toArticle(user),

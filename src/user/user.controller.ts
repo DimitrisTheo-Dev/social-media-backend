@@ -6,7 +6,6 @@ import {
   Body,
   ValidationPipe,
 } from '@nestjs/common';
-import { UserService } from './user.service';
 import { User } from 'src/auth/user.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { UserEntity } from 'src/entities/user.entity';
@@ -28,7 +27,7 @@ export class UserController {
   @UseGuards(AuthGuard())
   async update(
     @User() { id }: UserEntity,
-    @Body('user', new ValidationPipe({ transform: true, whitelist: true }))
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
     data: UpdateUserDTO,
   ){
     const user = await this.authService.updateUser(id, data);

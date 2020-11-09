@@ -90,7 +90,6 @@
     @Get('/:slug/comments')
     async findComments(@Param('slug') slug:string){
         const comments = await this.commentService.findByArticleSlug(slug);
-    
         return { comments };
     }
 

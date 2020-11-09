@@ -14,7 +14,7 @@ export class AuthController {
   }
 
   @Post('/login')
-  async login(@Body('user', ValidationPipe) credentials: LoginDTO): Promise<ResponseObject<'user', AuthResponse>> {
+  async login(@Body(ValidationPipe) credentials: LoginDTO) {
     const user = await this.authService.login(credentials);
     return { user };
   }

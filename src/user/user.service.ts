@@ -51,10 +51,10 @@ export class UserService {
 
   async acceptUser(
     currentUser: UserEntity,
-    username: string,
+    id: string,
   ): Promise<ProfileResponse> {
     const user = await this.userRepo.findOne({
-      where: { username },
+      where: { id },
       relations: ['friends'],
     });
     user.friendRequests = user.friendRequests.filter(
@@ -68,10 +68,10 @@ export class UserService {
 
   async unfriendUser(
     currentUser: UserEntity,
-    username: string,
+    id: string,
   ): Promise<ProfileResponse> {
     const user = await this.userRepo.findOne({
-      where: { username },
+      where: { id },
       relations: ['friends'],
     });
     user.friends = user.friends.filter(

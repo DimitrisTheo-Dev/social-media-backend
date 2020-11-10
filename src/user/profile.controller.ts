@@ -31,47 +31,47 @@ import { ProfileResponse } from 'src/models/user.model';
       return { profile };
     }
 
-    @Post('/:username/send-friend-request')
+    @Post('/:id/send-friend-request')
     @HttpCode(200)
     @UseGuards(AuthGuard())
     async sendFriendReq(
       @User() user: UserEntity,
-      @Param('username') username: string): Promise<ResponseObject<'profile', ProfileResponse>>  {
-      const profile = await this.userService.sendFriendReq(user, username);
+      @Param('id') id: string): Promise<ResponseObject<'profile', ProfileResponse>>  {
+      const profile = await this.userService.sendFriendReq(user, id);
       return { profile };
     } 
 
-    @Get('/:username/friend-request')
+    @Get('/:id/friend-request')
     @UseGuards(AuthGuard())
     async getFriendReq(
       @User() user: UserEntity,
-      @Param('username') username: string): Promise<ResponseObject<'profile', ProfileResponse>>  {
-      const profile = await this.userService.getFriendReq(user, username);
+      @Param('id') id: string): Promise<ResponseObject<'profile', ProfileResponse>>  {
+      const profile = await this.userService.getFriendReq(user, id);
       return { profile }
     }
 
 
     
-    @Post('/:username/accept-friend-request')
+    @Post('/:id/accept-friend-request')
     @HttpCode(200)
     @UseGuards(AuthGuard())
     async acceptUser(
       @User() user: UserEntity,
-      @Param('username') username: string): Promise<ResponseObject<'profile', ProfileResponse>>  
+      @Param('id') id: string): Promise<ResponseObject<'profile', ProfileResponse>>  
     {
-      const profile = await this.userService.acceptUser(user, username);
+      const profile = await this.userService.acceptUser(user, id);
       return { profile };
     }
 
 
   
-    @Delete('/:username/unfriend')
+    @Delete('/:id/unfriend')
     @UseGuards(AuthGuard())
     async unfriendUser(
       @User() user: UserEntity,
-      @Param('username') username: string,
+      @Param('id') id: string,
     ): Promise<ResponseObject<'profile', ProfileResponse>>  {
-      const profile = await this.userService.unfriendUser(user, username);
+      const profile = await this.userService.unfriendUser(user, id);
       return { profile };
     }
   }

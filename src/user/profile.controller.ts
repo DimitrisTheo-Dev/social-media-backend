@@ -13,16 +13,18 @@ import { User } from 'src/auth/user.decorator';
 import { UserEntity } from 'src/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
+import { ResponseObject } from 'src/models/response.models';
+import { ProfileResponse } from 'src/models/user.model';
   @Controller('profiles')
   export class ProfileController {
     constructor(private userService: UserService) {}
 
-    @Get('/:username')
+    @Get('/:id')
     @UseGuards(new OptionalAuthGuard())
     async findProfile(
       @User() user: UserEntity,
-      @Param('username') username: string) {
-      const profile = await this.userService.findByUsername(username, user);
+      @Param('id') id: string): Promise<ResponseObject<'profile', ProfileResponse>>  {
+      const profile = await this.userService.findByUsername(id, user);
       if (!profile) {
         throw new NotFoundException();
       }
@@ -34,7 +36,7 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
     @UseGuards(AuthGuard())
     async sendFriendReq(
       @User() user: UserEntity,
-      @Param('username') username: string) {
+      @Param('username') username: string): Promise<ResponseObject<'profile', ProfileResponse>>  {
       const profile = await this.userService.sendFriendReq(user, username);
       return { profile };
     } 
@@ -43,7 +45,7 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
     @UseGuards(AuthGuard())
     async getFriendReq(
       @User() user: UserEntity,
-      @Param('username') username: string) {
+      @Param('username') username: string): Promise<ResponseObject<'profile', ProfileResponse>>  {
       const profile = await this.userService.getFriendReq(user, username);
       return { profile }
     }
@@ -55,7 +57,7 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
     @UseGuards(AuthGuard())
     async acceptUser(
       @User() user: UserEntity,
-      @Param('username') username: string) 
+      @Param('username') username: string): Promise<ResponseObject<'profile', ProfileResponse>>  
     {
       const profile = await this.userService.acceptUser(user, username);
       return { profile };
@@ -68,7 +70,7 @@ import { OptionalAuthGuard } from 'src/auth/optional-auth.guard';
     async unfriendUser(
       @User() user: UserEntity,
       @Param('username') username: string,
-    ) {
+    ): Promise<ResponseObject<'profile', ProfileResponse>>  {
       const profile = await this.userService.unfriendUser(user, username);
       return { profile };
     }

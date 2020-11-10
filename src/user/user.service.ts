@@ -12,12 +12,12 @@ export class UserService {
   ) {}
 
   async findByUsername(
-    username: string,
+    id: string,
     user?: UserEntity,
   ): Promise<ProfileResponse> {
     return (
       await this.userRepo.findOne({
-        where: { username },
+        where: { id },
         relations: ['friends'],
       })
     ).toProfile(user);
@@ -27,10 +27,10 @@ export class UserService {
 
   async sendFriendReq(
     currentUser: UserEntity,
-    username: string,
+    id: string,
   ): Promise<ProfileResponse> {
     const user = await this.userRepo.findOne({
-      where: { username },
+      where: { id },
       relations: ['friendRequests'],
     });
       user.friendRequests.push(currentUser);
@@ -40,10 +40,10 @@ export class UserService {
 
   async getFriendReq(
     currentUser: UserEntity,
-    username: string,
+    id: string,
   ) {
     const user = await this.userRepo.findOne({
-      where: { username },
+      where: { id },
       relations: ['friendRequests'],
     });
     return user.toProfile(currentUser);

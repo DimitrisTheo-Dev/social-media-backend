@@ -1,3 +1,5 @@
+
+This is a backend service of a social media clone. It includes user authentication, sending friend requests, commenting on friends' posts additionally the user can get the feed with posts. Everything is connected with a PostgreSQL database and Docker. It was developed on typescript and NestJS.
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
